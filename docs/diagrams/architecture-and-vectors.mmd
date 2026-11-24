@@ -1,0 +1,34 @@
+flowchart TB
+  classDef runner fill:#1b4721,stroke:#3fb950,stroke-width:2px,color:#ffffff
+  classDef guard fill:#7a2e00,stroke:#f0883e,stroke-width:2px,color:#ffffff
+  classDef single fill:#1f3a5f,stroke:#79c0ff,stroke-width:2px,color:#ffffff
+  classDef cluster fill:#5a2ca0,stroke:#d2a8ff,stroke-width:2px,color:#ffffff
+  classDef out fill:#0d419d,stroke:#58a6ff,stroke-width:2px,color:#ffffff
+
+  subgraph LG["Containerized Runner (ghcr.io/builtwithai/ghes-loadgen)"]
+    V["Workload Families<br/>REST · GraphQL · Git & LFS<br/>Web UI · Search · Projects v2<br/>Code Scanning · Actions"]:::runner
+    C["Runtime Safeguards<br/>Explicit Network Opt-In<br/>Hard-Lease Cutoff & Abort"]:::guard
+    V --> C
+  end
+
+  subgraph M1["Single-Node & Staging Runs"]
+    DP["Connectivity Probe<br/>Operator Reachability &<br/>TLS Pre-Flight"]:::single
+    SN["Non-Prod GHES Target<br/>Smoke, Upgrade Sanity<br/>& Workload Families"]:::single
+    DP -.->|"Reachability & TLS"| SN
+  end
+
+  subgraph M2["Multi-Node Cluster Runs"]
+    BL["Balanced Traffic Split<br/>Even Per-Node Fanout<br/>Across Cluster Nodes"]:::cluster
+    CL["Non-Prod GHES Cluster<br/>Stepped Ladders &<br/>Ceiling Discovery"]:::cluster
+    WD["External Health Gate<br/>Pre-Run Headroom Gate<br/>& Polled Live Abort"]:::guard
+    BL --> CL
+    WD -.->|"Monitor"| CL
+    WD -.->|"Gate / abort"| C
+  end
+
+  R["Offline HTML Reports<br/>Latency Percentiles, RPS<br/>& Failure Breakdowns"]:::out
+
+  C -.->|"Operator pre-flight"| DP
+  C -->|"Direct mode"| SN
+  C -->|"Cluster run path"| BL
+  C -->|"Offline report"| R

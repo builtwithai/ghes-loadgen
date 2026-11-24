@@ -1,0 +1,21 @@
+# gsync commit.log — archived from builtwithai/ghes-loadgen (main)
+# Upstream commit: 337bbfeb67591ceebece9733485a8a2af5b95227
+# Commits recorded: 2 of 2
+
+commit 337bbfeb67591ceebece9733485a8a2af5b95227
+Author: SKi <megamanics@users.noreply.github.com> (@megamanics)
+Date:   2026-11-24T03:27:39Z
+
+    Clarify non-production warning in README
+
+commit 4369800c6cbc8848398cca8c0856d9eb3933a33f
+Author: megamanics <megamanics@users.noreply.github.com> (@megamanics)
+Date:   2026-11-24T00:37:09Z
+
+    Initial public showcase for ghes-loadgen
+
+    Because five curl /status calls is not a load test.
+
+    Adds the public front door, workload family overview, gated GHCR pull and
+    revocation runbook, private intake template, and architecture diagrams for
+    the non-production GitHub Enterprise Server load generator container.

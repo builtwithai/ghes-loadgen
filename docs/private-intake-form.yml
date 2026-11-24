@@ -1,0 +1,115 @@
+# Drop this file into your PRIVATE intake repository at:
+#   .github/ISSUE_TEMPLATE/ghes-loadgen-access.yml
+# Do not enable it on a public repository — responses contain target topologies
+# and scheduling details that should remain private.
+name: GHES Loadgen Access Request
+description: Request temporary pull access to ghcr.io/builtwithai/ghes-loadgen for a non-production GHES test window.
+title: "[Access] <Organization> - <GHES Version>"
+labels:
+  - access-request
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this private form to request time-boxed `Read` access to `ghcr.io/builtwithai/ghes-loadgen`
+        for a non-production GitHub Enterprise Server target. Do **not** paste tokens, passwords, or private SSH keys here.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Target Setup
+      description: Select the test setup that matches your non-production environment.
+      options:
+        - Single-node non-prod staging validation
+        - Multi-node non-prod cluster capacity run
+        - Pre-upgrade or migration before/after comparison
+        - Air-gapped / restricted-egress image delivery (SHA256-verified .tar.gz)
+    validations:
+      required: true
+
+  - type: input
+    id: github_usernames
+    attributes:
+      label: Named GitHub Username(s) for GHCR Access (or "Air-Gap Only")
+      description: "Comma-separated github.com handles. Private organization-scoped GHCR packages require temporary membership in a zero-repo-access team in `builtwithai` (removed at closeout), paired with each operator's expiring classic `read:packages` PAT. If org membership is not permitted, select the air-gap `.tar.gz` option."
+      placeholder: "@alice-eng, @bob-sre"
+    validations:
+      required: true
+
+  - type: input
+    id: ghes_version
+    attributes:
+      label: Target GHES Version
+      description: Major.minor.patch of the non-production GHES target (e.g., 3.22.0 or 3.23.0).
+      placeholder: "3.23.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: topology
+    attributes:
+      label: Node Count & Topology
+      description: Describe standalone vs. HA vs. multi-node cluster node counts and vCPU/RAM per node.
+      placeholder: |
+        Example:
+        - Standalone non-prod staging: 1 node, 16 vCPU / 128 GiB RAM
+        - Or Multi-node cluster: 5 nodes total (list count and vCPU/RAM per node group)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: nonprod_confirm
+    attributes:
+      label: Non-Production Readiness
+      description: Confirm all safety prerequisites before access is granted.
+      options:
+        - label: Target environment is strictly non-production (isolated from production users, repos, and backups).
+          required: true
+        - label: Dedicated Linux x86_64 host with Docker is available for the load generator (traffic will not run from a laptop).
+          required: true
+        - label: Test users, test repositories, and disposable non-prod PATs can be provisioned and wiped after testing.
+          required: true
+        - label: Team agrees to complete the closeout cleanup checklist (and, if pulling from GHCR, to use an expiring classic `read:packages` PAT and delete/log out at closeout).
+          required: true
+
+  - type: dropdown
+    id: network_constraints
+    attributes:
+      label: Network & Registry Egress Constraints
+      description: How will your load generator host obtain the container image?
+      options:
+        - Direct HTTPS pull from ghcr.io (standard)
+        - Corporate HTTPS proxy / allowlisted ghcr.io egress
+        - Air-gapped environment (requires SHA256-verified .tar.gz transfer with out-of-band checksum)
+    validations:
+      required: true
+
+  - type: textarea
+    id: workload_and_criteria
+    attributes:
+      label: Target Workloads & Question to Answer
+      description: Which GHES surfaces matter most (REST, GraphQL, Git HTTP/SSH, Projects v2, Code Scanning/SARIF, Actions) and what threshold or regression are you checking?
+      placeholder: |
+        Example: Check 3.23 staging stability under concurrent Git shallow clones + REST metadata reads
+        and verify p95 stays under 2s with <1% errors before scheduling the production upgrade.
+    validations:
+      required: true
+
+  - type: input
+    id: deadline_and_window
+    attributes:
+      label: Testing Window & Target Date
+      description: "Target start/end dates (UTC). Access grants and PAT expiration should match this window (typically 7-14 days, up to 30 days)."
+      placeholder: "2026-12-01 to 2026-12-15"
+    validations:
+      required: true
+
+  - type: input
+    id: sponsor
+    attributes:
+      label: Technical Contact
+      description: Name and role of the engineering contact for this test window.
+      placeholder: "Jane Doe, Platform Engineering"
+    validations:
+      required: true

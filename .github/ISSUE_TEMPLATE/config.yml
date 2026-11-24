@@ -1,0 +1,13 @@
+# Blank public issues are disabled to discourage posting GHES hostnames, private IPs,
+# topologies, and credentials publicly. To block public issue filing completely, also
+# disable Issues in this repository's Settings.
+# Maintainer note: if you operate a dedicated private intake repo accessible
+# to users, add its verified contact_link below before publishing.
+blank_issues_enabled: false
+contact_links:
+  - name: Access Rules, Non-Prod Disclaimers & Closeout (SUPPORT.md)
+    url: https://github.com/builtwithai/ghes-loadgen/blob/main/SUPPORT.md
+    about: How gated pull access works, non-production boundaries, and what to send privately to @megamanics.
+  - name: Contact Maintainer (@megamanics)
+    url: https://github.com/megamanics
+    about: Reach @megamanics privately to request time-boxed GHCR access or coordinate a non-production test window.
