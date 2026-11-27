@@ -224,11 +224,34 @@ Notify [`@megamanics`](https://github.com/megamanics) in your private thread so 
 
 ---
 
+## Install as an Agent Skill / Plugin
+
+This repository ships a reusable [`ghes-loadgen-smoke`](skills/ghes-loadgen-smoke/SKILL.md) Agent Skill (with preflight checks, troubleshooting pitfalls, and clean closeout verification) packaged as a plugin for Copilot CLI and Claude Code, with manual install support for other Agent Skills clients:
+
+**GitHub Copilot CLI:**
+
+```bash
+copilot plugin install builtwithai/ghes-loadgen
+```
+
+**Claude Code:**
+
+```text
+/plugin marketplace add builtwithai/ghes-loadgen
+/plugin install ghes-loadgen@ghes-loadgen
+```
+
+**Local / manual skill install:** Copy `skills/ghes-loadgen-smoke/` into your client's skills directory (for example `~/.copilot/skills/ghes-loadgen-smoke/` or `~/.claude/skills/ghes-loadgen-smoke/`).
+
+---
+
 ## Repository Contents
 
 | Path | What's Inside |
 |---|---|
 | [`README.md`](README.md) | What `ghes-loadgen` does, built-in safeguards, gated pull flow, and closeout |
+| [`skills/ghes-loadgen-smoke/SKILL.md`](skills/ghes-loadgen-smoke/SKILL.md) | Reusable Agent Skill for from-scratch 44-vector non-prod smoke setup, execution, and closeout ([preflight & pitfalls reference](skills/ghes-loadgen-smoke/references/preflight-and-pitfalls.md)) |
+| [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) | Plugin & marketplace manifests ([`marketplace.json`](.claude-plugin/marketplace.json)) for installing the skill in Copilot CLI and Claude Code |
 | [`docs/vectors.md`](docs/vectors.md) | Detailed breakdown of the 8 workload families and shaping modes |
 | [`docs/access-lifecycle.md`](docs/access-lifecycle.md) | Complete operator & maintainer runbook for gated pulls, offline `.tar.gz` delivery, and revocation |
 | [`docs/diagrams/access-lifecycle.md`](docs/diagrams/access-lifecycle.md) | Standalone Mermaid diagram of the gated access & closeout lifecycle (`.mmd` included) |

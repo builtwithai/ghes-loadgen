@@ -1,0 +1,14 @@
+{
+  "name": "ghes-loadgen",
+  "description": "Public plugin marketplace for the ghes-loadgen non-production GHES smoke test skill.",
+  "owner": {
+    "name": "megamanics"
+  },
+  "plugins": [
+    {
+      "name": "ghes-loadgen",
+      "description": "From-scratch 44-vector non-production GHES smoke test setup, preflight, execution, verification, and clean closeout skill.",
+      "source": "./"
+    }
+  ]
+}

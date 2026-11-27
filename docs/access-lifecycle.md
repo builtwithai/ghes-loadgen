@@ -115,7 +115,7 @@ Verify that:
 
 ### Step 4.3: Check Target Reachability and TLS Before Generating Load
 
-Run `direct-probe` manually as a pre-flight check against your non-production GHES hostname (`direct` mode does not invoke `direct-probe` automatically). Direct modes fail closed (exit code `64`) unless `GHES_LOADGEN_ALLOW_NETWORK=1` is explicitly passed, and `direct-probe` verifies HTTPS TLS certificates by default:
+Run `direct-probe` manually as a pre-flight check against your non-production GHES hostname (`direct` mode does not invoke `direct-probe` automatically). Direct modes fail closed (exit code `64`) unless `GHES_LOADGEN_ALLOW_NETWORK=1` is explicitly passed, and `direct-probe` verifies HTTPS TLS certificates by default. On hardened Docker hosts where `/etc/docker/daemon.json` sets `"bridge": "none"`, add `--network=host` (or attach a routed custom bridge) for single-node `direct-probe`/`direct` runs, or use the networkless cluster harness without modifying `/etc/docker/daemon.json`.
 
 ```bash
 export GHES_HOST="ghes-nonprod.example.internal"
